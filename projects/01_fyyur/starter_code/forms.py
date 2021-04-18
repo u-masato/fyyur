@@ -1,9 +1,11 @@
 from datetime import datetime
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
 from wtforms.validators import DataRequired, AnyOf, URL
 
-class ShowForm(Form):
+# from .app import Artist
+
+class ShowForm(FlaskForm):
     artist_id = StringField(
         'artist_id'
     )
@@ -16,7 +18,7 @@ class ShowForm(Form):
         default= datetime.today()
     )
 
-class VenueForm(Form):
+class VenueForm(FlaskForm):
     name = StringField(
         'name', validators=[DataRequired()]
     )
@@ -126,9 +128,33 @@ class VenueForm(Form):
         'seeking_description'
     )
 
+    def set_data(self, venue):
+        self.name.data = venue.name
+        self.city.data = venue.city
+        self.state.data = venue.state
+        self.genres.data = venue.genres.split(',')
+        self.website_link.data = venue.website_link
+        self.facebook_link.data = venue.facebook_link
+        self.phone.data = venue.phone
+        self.image_link.data = venue.image_link
+        self.seeking_talent.data = venue.seeking_talent
+        self.seeking_description.data = venue.seeking_description
+
+    def feedback_to(self, venue):
+        venue.name = self.name.data
+        venue.city = self.city.data
+        venue.state = self.state.data
+        venue.address = self.address.data
+        venue.phone = self.phone.data
+        venue.genres = ','.join(self.genres.data)
+        venue.image_link = self.image_link.data
+        venue.facebook_link = self.facebook_link.data
+        venue.website_link = self.website_link.data
+        venue.seeking_talent = self.seeking_talent.data
+        venue.seeking_description = self.seeking_description.data
 
 
-class ArtistForm(Form):
+class ArtistForm(FlaskForm):
     name = StringField(
         'name', validators=[DataRequired()]
     )
@@ -237,3 +263,26 @@ class ArtistForm(Form):
             'seeking_description'
      )
 
+    def set_data(self, artist):
+        self.name.data = artist.name
+        self.city.data = artist.city
+        self.state.data = artist.state
+        self.genres.data = artist.genres.split(',')
+        self.website_link.data = artist.website_link
+        self.facebook_link.data = artist.facebook_link
+        self.phone.data = artist.phone
+        self.image_link.data = artist.image_link
+        self.seeking_venue.data = artist.seeking_venue
+        self.seeking_description.data = artist.seeking_description
+
+    def feedback_to(self, artist):
+        artist.name = self.name.data
+        artist.city = self.city.data
+        artist.state = self.state.data
+        artist.genres = ','.join(self.genres.data)
+        artist.website_link = self.website_link.data
+        artist.facebook_link = self.facebook_link.data
+        artist.phone = self.phone.data
+        artist.image_link = self.image_link.data
+        artist.seeking_venue = self.seeking_venue.data
+        artist.seeking_description = self.seeking_description.data
